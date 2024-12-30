@@ -1,6 +1,8 @@
 package socket;
 
 import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
@@ -75,6 +77,12 @@ public class Client {
                 System.out.println("昵称不能为空");
             }
 
+            //将接收服务端发送过来消息的线程启动
+            ServerHandler handler = new ServerHandler();
+            Thread t = new Thread(handler);
+            t.setDaemon(true);
+            t.start();
+
             System.out.println("开始聊天吧");
             while(true) {
                 String line = scanner.nextLine();
@@ -101,6 +109,27 @@ public class Client {
         Client client = new Client();//调用构造器初始化客户端
         client.start();//调用start方法使客户端开始工作
     }
+
+    private class ServerHandler implements Runnable{
+        @Override
+        public void run() {
+            try {
+                //通过socket获取输入流,用于读取服务端发送过来的消息
+                InputStream in = socket.getInputStream();
+                InputStreamReader isr = new InputStreamReader(in, StandardCharsets.UTF_8);
+                BufferedReader br = new BufferedReader(isr);
+                String line;
+                while((line = br.readLine())!=null){
+                    System.out.println(line);
+                }
+
+            } catch (IOException e) {
+
+            }
+        }
+    }
+
+
 }
 
 

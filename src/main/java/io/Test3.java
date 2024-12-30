@@ -16,18 +16,18 @@ import java.util.Scanner;
  */
 public class Test3 {
     public static void main(String[] args) throws IOException {
-        Scanner scanner=new Scanner(System.in);
-        System.out.println("请输入你要记录的内容");
-        FileOutputStream fos=new FileOutputStream("./note.txt");
-        String line ;
-        while (true){
-            line=scanner.nextLine();
-            if ("exit".equalsIgnoreCase(line)){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("请开始输入内容，单独输入exit退出");
+        FileOutputStream fos = new FileOutputStream("note.txt");
+        while(true){
+            String line = scanner.nextLine();
+            if("exit".equalsIgnoreCase(line)){
                 break;
             }
-            byte[] data=line.getBytes(StandardCharsets.UTF_8);
+            byte[] data = line.getBytes(StandardCharsets.UTF_8);
             fos.write(data);
         }
+        System.out.println("再见!");
         fos.close();
     }
 }
